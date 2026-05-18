@@ -1,0 +1,6 @@
+# Feed URLs — one per line. Lines starting with # are ignored.
+# Add your RSS or Atom feeds here:
+#
+# https://feeds.bbci.co.uk/news/rss.xml
+# https://hnrss.org/frontpage
+# https://www.theverge.com/rss/index.xml
