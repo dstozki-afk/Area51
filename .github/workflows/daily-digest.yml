@@ -1,0 +1,31 @@
+name: Daily Digest Email
+
+on:
+  schedule:
+    # 7:00 AM Mountain Time = 13:00 UTC (MDT, summer) / 14:00 UTC (MST, winter).
+    # GitHub Actions cron does not adjust for DST, so this runs at 7am MDT
+    # (6am MST) in winter. Adjust if you need exact 7am year-round.
+    - cron: '0 13 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Generate and send Daily Digest
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DIGEST_TO_EMAIL: dstozki@gmail.com
+        run: python scripts/daily_digest.py
